@@ -1,4 +1,4 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { Duration, Stack, StackProps } from 'aws-cdk-lib';
 import { aws_lambda as lambda } from 'aws-cdk-lib'
 import { aws_iam as iam } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
@@ -10,8 +10,9 @@ export class LambdaStack extends Stack {
 
     const secretSantaLambda = new lambda.Function(this, 'secretSanta', {
       functionName: "secret-santa",
+      timeout: Duration.minutes(1),
       runtime: lambda.Runtime.PYTHON_3_9,
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/src')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda'), { exclude: ['venv/**', 'test/**', 'requirements.txt'] }),
       handler: 'secret_santa.lambda_handler'
     });
 

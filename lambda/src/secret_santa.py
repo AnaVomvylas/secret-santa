@@ -1,7 +1,7 @@
 import random
 import boto3
-from .handler import event as event_handler
-from .handler import lambda_response
+import src.handler.event as event_handler
+import src.handler.lambda_response as lambda_response
 
 
 def execute_secret_santa(senders: list) -> dict:

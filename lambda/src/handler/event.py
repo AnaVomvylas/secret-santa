@@ -1,4 +1,4 @@
-from ..model.participant import Participant
+from src.model.participant import Participant
 
 def get_participants_from_event(event):
     event_participants = event["participants"]
