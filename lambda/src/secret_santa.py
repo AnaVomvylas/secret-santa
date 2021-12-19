@@ -1,7 +1,7 @@
 import random
-import boto3
 import src.handler.event as event_handler
 import src.handler.lambda_response as lambda_response
+import src.client.ses as aws_ses
 
 
 def execute_secret_santa(senders: list) -> dict:
@@ -33,4 +33,10 @@ def lambda_handler(event, context):
 
     while len(pairs) == 0:
         pairs = execute_secret_santa(participants)
+
+    for participant in participants:
+        destination_address = participant.email
+        gift_receiver_name = pairs[participant.name]
+        aws_ses.send_email(destination_address, gift_receiver_name)
+        
     return lambda_response.ok(pairs)

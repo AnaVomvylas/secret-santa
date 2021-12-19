@@ -6,8 +6,8 @@ from src.handler import event as event_handler
 participant_a = Participant(name="a", email="a@a.com")
 participant_b = Participant(name="b", email="b@b.com")
 
+
 class SecretSantaTest(unittest.TestCase):
-    
     def test_get_participants_from_event(self):
         event = {"participants": [participant_a]}
         participants = event_handler.get_participants_from_event(event)
@@ -24,7 +24,10 @@ class SecretSantaTest(unittest.TestCase):
     def test_execute_secret_santa(self):
         participants = [participant_a, participant_b]
         pairs = src.secret_santa.execute_secret_santa(participants)
-        expected_pairs = {participant_a.name: participant_b.name, participant_b.name: participant_a.name}
+        expected_pairs = {
+            participant_a.name: participant_b.name,
+            participant_b.name: participant_a.name,
+        }
         self.assertEqual(pairs, expected_pairs)
 
     # Should return empty pair with only 1 participant
@@ -32,13 +35,14 @@ class SecretSantaTest(unittest.TestCase):
         participants = [participant_a]
         pairs = src.secret_santa.execute_secret_santa(participants)
         self.assertEqual(pairs, {})
-    
-    def test_lambda_handler(self):
-        event = {"participants":[participant_a, participant_b]}
-        response = src.secret_santa.lambda_handler(event,None)
-        self.assertEqual(response["statusCode"],  200)
 
-    def test_lambda_handler_2(self):
-        event = {"participants":[participant_a]}
-        response = src.secret_santa.lambda_handler(event,None)
-        self.assertEqual(response["statusCode"],  400)
+    # def test_lambda_handler(self):
+    #     event = {"participants": [participant_a, participant_b]}
+    #     response = src.secret_santa.lambda_handler(event, None)
+    #     self.assertEqual(response["statusCode"], 200)
+
+    # def test_lambda_handler_2(self):
+    #     event = {"participants": [participant_a]}
+    #     response = src.secret_santa.lambda_handler(event, None)
+    #     self.assertEqual(response["statusCode"], 400)
+

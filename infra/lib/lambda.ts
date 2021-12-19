@@ -11,6 +11,7 @@ export class LambdaStack extends Stack {
     const secretSantaLambda = new lambda.Function(this, 'secretSanta', {
       functionName: "secret-santa",
       timeout: Duration.minutes(1),
+      environment: { "SES_EMAIL_FROM": String(process.env.SES_EMAIL_FROM) },
       runtime: lambda.Runtime.PYTHON_3_9,
       code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda'), { exclude: ['venv/**', 'test/**', 'requirements.txt'] }),
       handler: 'src.secret_santa.lambda_handler'

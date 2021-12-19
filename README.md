@@ -3,7 +3,9 @@ Secret Santa raffle. Sends email to every participant informing them who their g
 
 # Architecture
 
-Lambda function that gets an event of the form ```{
+Lambda function that gets an event of the form 
+```
+{
   "participants": [
     {
       "name": "a",
@@ -11,12 +13,19 @@ Lambda function that gets an event of the form ```{
     },
     ...
   ]
-}```
+}
+```
 It uses boto3 to send the emails with a verified identity email as sender.
 
 # Prerequisites
-1. Configure an email on AWS SES as verified identity
+1. Configure an email on AWS SES as verified identity and have production access
 2. Configure a profile on ~/.aws
+3. Add an .env file containing the following 
+```
+AWS_REGION = ""
+AWS_ACCOUNT = ""
+SES_EMAIL_FROM = "" 
+```
 
 # How to run
 
