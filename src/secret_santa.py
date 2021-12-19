@@ -1,4 +1,5 @@
 import random
+import json
 
 emails = ["1", "2", "3"]
 
@@ -23,7 +24,12 @@ def get_random_receiver(sender: str, receivers: list) -> str:
     return random.choice(receivers_excluding_sender)
 
 
-if __name__ == "__main__":
+def lambda_handler(event, context):
     pairs = {}
     while len(pairs) == 0:
         pairs = execute_secret_santa()
+    return {
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": json.dumps({"pairs": {pairs}}),
+    }
