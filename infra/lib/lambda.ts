@@ -13,7 +13,7 @@ export class LambdaStack extends Stack {
       timeout: Duration.minutes(1),
       runtime: lambda.Runtime.PYTHON_3_9,
       code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda'), { exclude: ['venv/**', 'test/**', 'requirements.txt'] }),
-      handler: 'secret_santa.lambda_handler'
+      handler: 'src.secret_santa.lambda_handler'
     });
 
     const sesPolicy = new iam.PolicyStatement({
