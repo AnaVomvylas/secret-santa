@@ -9,8 +9,9 @@ export class LambdaStack extends Stack {
     super(scope, id, props);
 
     const secretSantaLambda = new lambda.Function(this, 'secretSanta', {
+      functionName: "secret-santa",
       runtime: lambda.Runtime.PYTHON_3_9,
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../src')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/src')),
       handler: 'secret_santa.lambda_handler'
     });
 
