@@ -1,7 +1,7 @@
 import random
-import json
-
-emails = ["1", "2", "3"]
+import boto3
+from .handler import event as event_handler
+from .handler import lambda_response
 
 
 def execute_secret_santa(senders: list) -> dict:
@@ -13,7 +13,7 @@ def execute_secret_santa(senders: list) -> dict:
             return {}
         receiver = get_random_receiver(sender, remaining_receivers)
         remaining_receivers.remove(receiver)
-        pairs[sender] = receiver
+        pairs[sender.name] = receiver.name
     return pairs
 
 
@@ -25,11 +25,12 @@ def get_random_receiver(sender: str, receivers: list) -> str:
 
 
 def lambda_handler(event, context):
+    participants = event_handler.get_participants_from_event(event)
     pairs = {}
+
+    if len(participants) <= 1:
+        return lambda_response.bad_request("Participant count must be at least 2")
+
     while len(pairs) == 0:
-        pairs = execute_secret_santa()
-    return {
-        "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
-        "body": json.dumps({"pairs": {pairs}}),
-    }
+        pairs = execute_secret_santa(participants)
+    return lambda_response.ok(pairs)
